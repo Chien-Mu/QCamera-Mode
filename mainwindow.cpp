@@ -17,13 +17,19 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
 
     //camera
     camera = new Camera;
+
+    //scanner
+    scanner = new scanthread;
+    connect(this,SIGNAL(throwImage(QImage*)),scanner,SLOT(receiveIamge(QImage*)));
+    connect(scanner,SIGNAL(scan_ok()),this,SLOT(on_Capture()));
+
+    //initialization
     initialization();
-    ui->gridLayout->addWidget(camera->getVideoWidget(),0,1);
 
-
-    //Form Text
+    //ui
     formText = new QPlainTextEdit(this);
     ui->gridLayout->addWidget(formText,1,0,1,3);
+    ui->gridLayout->addWidget(camera->getVideoWidget(),0,1); //一定要在 initialization() 之後
 }
 
 bool MainWindow::initialization(){
@@ -37,12 +43,14 @@ bool MainWindow::initialization(){
     connect(camera,SIGNAL(Error(int,QCameraImageCapture::Error,QString)),
             this,SLOT(displayCaptureError(int,QCameraImageCapture::Error,QString)));
     camera->CameraStrat();
+    scanner->start();
 
     return true;
 }
 
 void MainWindow::on_Capture(){
-    //camera->getCurrentImage();
+    currentImage = camera->getCurrentImage();
+    emit throwImage(&currentImage);
 }
 
 void MainWindow::displayCaptureError(int id, QCameraImageCapture::Error error, const QString &errorString){

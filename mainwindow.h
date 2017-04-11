@@ -3,8 +3,10 @@
 
 #include <QMainWindow>
 #include <QPlainTextEdit>
+#include <QImage>
 
 #include <camera.h>
+#include "scanthread.h"
 
 namespace Ui {
 class MainWindow;
@@ -23,10 +25,15 @@ private:
     Ui::MainWindow *ui;
     Camera *camera;
     QPlainTextEdit *formText;
+    scanthread *scanner;
+    QImage currentImage;
 
 private slots:
     void on_Capture();
     void displayCaptureError(int id,QCameraImageCapture::Error error,const QString &errorString);
+
+signals:
+    void throwImage(QImage* value);
 };
 
 #endif // MAINWINDOW_H

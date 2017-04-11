@@ -21,7 +21,7 @@ public:
 
     //get
     QWidget *getVideoWidget() { return videoWidget; } //丟出畫版
-    QImage getCurrentImage() { return videoWidget->currentImage().copy(); } //丟圖
+    QImage getCurrentImage() { return videoWidget->currentImage()->copy(); } //丟by value實體圖
 
 private:
     //camera and control

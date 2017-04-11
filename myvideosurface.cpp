@@ -54,12 +54,12 @@ void MyVideoSurface::paintImage(QPainter *painter)
                     QVideoFrame::imageFormatFromPixelFormat(currentFrame.pixelFormat()));
         image = image.scaled(W,H);
         painter->drawImage(0,0,image);
-        _currentImage = image;
+        currentImage = image;
 
         currentFrame.unmap();
     }
 }
 
-QImage MyVideoSurface::currentImage(){
-    return _currentImage;
+QImage* MyVideoSurface::getCurrentImage(){
+    return &currentImage;
 }

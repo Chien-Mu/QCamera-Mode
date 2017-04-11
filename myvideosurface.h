@@ -19,13 +19,12 @@ public:
     bool present(const QVideoFrame &frame);
 
     void paintImage(QPainter *painter); //讓外界的 painter 可以進來被劃上image
-
-    QImage currentImage();
+    QImage currentImage; //因為要送指標出去，所以用 public
+    QImage *getCurrentImage();
 
 private:
     QWidget *widget;
     QVideoFrame currentFrame;
-    QImage _currentImage;
     int W;
     int H;
 };
