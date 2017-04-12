@@ -8,6 +8,7 @@
 #include <QImageEncoderSettings>
 
 #include "videowidget.h"
+#include "myvideosurface.h" //ImageFrame
 
 class Camera : public QObject
 {
@@ -21,7 +22,7 @@ public:
 
     //get
     QWidget *getVideoWidget() { return videoWidget; } //丟出畫版
-    QImage getCurrentImage() { return videoWidget->currentImage()->copy(); } //丟by value實體圖
+    ImageFrame getCurrentImage() { return videoWidget->refImageSurface()->getCurrentImage(); } //丟圖
 
 private:
     //camera and control

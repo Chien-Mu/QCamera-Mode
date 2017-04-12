@@ -5,6 +5,12 @@
 #include <QWidget>
 #include <QVideoSurfaceFormat>
 #include <QPainter>
+#include <QImage>
+
+struct ImageFrame{
+    QImage image;
+    int id;
+};
 
 //實作 QAbstractVideoSurface 抽象類別
 class MyVideoSurface : public QAbstractVideoSurface
@@ -19,12 +25,13 @@ public:
     bool present(const QVideoFrame &frame);
 
     void paintImage(QPainter *painter); //讓外界的 painter 可以進來被劃上image
-    QImage currentImage; //因為要送指標出去，所以用 public
-    QImage *getCurrentImage();
+    ImageFrame getCurrentImage();
 
 private:
     QWidget *widget;
     QVideoFrame currentFrame;
+    ImageFrame currentImage;
+    int _id;
     int W;
     int H;
 };

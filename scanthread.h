@@ -5,8 +5,6 @@
 #include <QThread>
 #include <QImage>
 #include <dmtx.h>
-#include <QMutex>
-#include <QWaitCondition>
 
 class scanthread : public QThread
 {
@@ -19,13 +17,12 @@ public:
 
 private:
     bool quit;
-    QByteArray scan(QImage *currentImage);
-    QImage *currentImage;
-    QMutex mutex;
-    QWaitCondition cond;
+    QByteArray scan(QImage currentImage);
+    QImage currentImage;
+    int id;
 
 public slots:
-    void receiveIamge(QImage *currentImage);
+    void receiveIamge(QImage currentImage, int id);
 
 signals:
     void scan_ok();

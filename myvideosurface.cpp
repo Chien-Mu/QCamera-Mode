@@ -5,6 +5,7 @@ MyVideoSurface::MyVideoSurface(QWidget *widget,int W,int H, QObject *parent) : Q
     this->widget = widget;
     this->W = W;
     this->H = H;
+    this->_id = 0;
 }
 
 QList<QVideoFrame::PixelFormat> MyVideoSurface::supportedPixelFormats(
@@ -45,6 +46,7 @@ void MyVideoSurface::paintImage(QPainter *painter)
     //如果映射模式為WriteOnly，則原本的VideoFrame將會受到更改
     //當不再需要訪問數據時，請用unmap()函數釋放映射的memory
     if (currentFrame.map(QAbstractVideoBuffer::ReadOnly)) {
+        currentImage.id = _id; //給每張圖id
 
         QImage image(
                     currentFrame.bits(),
@@ -54,12 +56,15 @@ void MyVideoSurface::paintImage(QPainter *painter)
                     QVideoFrame::imageFormatFromPixelFormat(currentFrame.pixelFormat()));
         image = image.scaled(W,H);
         painter->drawImage(0,0,image);
-        currentImage = image;
+        currentImage.image = image.convertToFormat(QImage::Format_Grayscale8);
 
         currentFrame.unmap();
+        _id++;
+        if(_id >= 1000) //1000後一個循環
+            _id = 0;
     }
 }
 
-QImage* MyVideoSurface::getCurrentImage(){
-    return &currentImage;
+ImageFrame MyVideoSurface::getCurrentImage(){
+    return currentImage;
 }

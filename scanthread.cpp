@@ -6,14 +6,13 @@ scanthread::scanthread()
     this->quit = false;
 }
 
-void scanthread::receiveIamge(QImage *currentImage){
+void scanthread::receiveIamge(QImage currentImage, int id){
     this->currentImage = currentImage;
-    cond.wakeOne();
+    this->id = id;
 }
 
 void scanthread::stop(){
     quit = true;
-    cond.wakeOne();
 }
 
 void scanthread::run(){
@@ -23,20 +22,13 @@ void scanthread::run(){
     while(!quit){
         emit scan_ok(); //通知要圖
 
-        //等待圖傳輸
-        mutex.lock();
-        cond.wait(&mutex);
-        mutex.unlock();
-
         //scanner
-        if(!quit)
+        if(!quit)            
             SN = scan(this->currentImage);
-        qDebug() << "scan ok";
-        msleep(500);
     }
 }
 
-QByteArray scanthread::scan(QImage *currentImage){
+QByteArray scanthread::scan(QImage currentImage){
     QByteArray SN;
 
     DmtxImage *dmImg;
@@ -51,7 +43,7 @@ QByteArray scanthread::scan(QImage *currentImage){
     p10.X = p01.Y = p11.X = p11.Y = 1.0;
     int p_height;
 
-    dmImg = dmtxImageCreate(currentImage->bits(),currentImage->width(),currentImage->height(),DmtxPack8bppK);
+    dmImg = dmtxImageCreate(currentImage.bits(),currentImage.width(),currentImage.height(),DmtxPack8bppK);
     if(dmImg == NULL)
         return "-1";
 
@@ -109,6 +101,6 @@ QByteArray scanthread::scan(QImage *currentImage){
 
     dmtxDecodeDestroy(&dmDec);
     dmtxImageDestroy(&dmImg);
-
+    msleep(200);
     return SN;
 }

@@ -17,10 +17,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
 
     //camera
     camera = new Camera;
+    TmpID = -1;
 
     //scanner
     scanner = new scanthread;
-    connect(this,SIGNAL(throwImage(QImage*)),scanner,SLOT(receiveIamge(QImage*)));
+    connect(this,SIGNAL(throwImage(QImage,int)),scanner,SLOT(receiveIamge(QImage,int)));
     connect(scanner,SIGNAL(scan_ok()),this,SLOT(on_Capture()));
 
     //initialization
@@ -50,7 +51,13 @@ bool MainWindow::initialization(){
 
 void MainWindow::on_Capture(){
     currentImage = camera->getCurrentImage();
-    emit throwImage(&currentImage);
+
+    //一樣的圖就不處理
+    if(currentImage.id != TmpID){
+        emit throwImage(currentImage.image,currentImage.id);
+    }
+
+    TmpID = currentImage.id; //update
 }
 
 void MainWindow::displayCaptureError(int id, QCameraImageCapture::Error error, const QString &errorString){

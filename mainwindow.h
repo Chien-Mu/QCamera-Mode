@@ -26,14 +26,15 @@ private:
     Camera *camera;
     QPlainTextEdit *formText;
     scanthread *scanner;
-    QImage currentImage;
+    ImageFrame currentImage;
+    int TmpID;
 
 private slots:
     void on_Capture();
     void displayCaptureError(int id,QCameraImageCapture::Error error,const QString &errorString);
 
 signals:
-    void throwImage(QImage* value);
+    void throwImage(QImage value,int id);
 };
 
 #endif // MAINWINDOW_H
