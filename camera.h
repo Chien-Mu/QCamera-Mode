@@ -1,4 +1,4 @@
-#ifndef CAMERA_H
+﻿#ifndef CAMERA_H
 #define CAMERA_H
 
 #include <QObject>
@@ -22,7 +22,10 @@ public:
 
     //get
     QWidget *getVideoWidget() { return videoWidget; } //丟出畫版
-    ImageFrame getCurrentImage() { return videoWidget->refImageSurface()->getCurrentImage(); } //丟圖
+    ImageFrame* getCurrentImage() { return videoWidget->refImageSurface()->getCurrentImage(); } //丟圖
+
+public slots:
+    void drawVideoWidget(QRect rect);
 
 private:
     //camera and control

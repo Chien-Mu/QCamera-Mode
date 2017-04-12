@@ -1,4 +1,4 @@
-#ifndef SCANTHREAD_H
+﻿#ifndef SCANTHREAD_H
 #define SCANTHREAD_H
 
 #include <QObject>
@@ -6,26 +6,29 @@
 #include <QImage>
 #include <dmtx.h>
 
+#include "mainwindow.h"
+
 class scanthread : public QThread
 {
     Q_OBJECT
 public:
-    scanthread();
+    scanthread(MainWindow *ref);
     //void setScan();
     void run();
     void stop();
 
 private:
+    MainWindow *ref;
     bool quit;
-    QByteArray scan(QImage currentImage);
-    QImage currentImage;
-    int id;
-
-public slots:
-    void receiveIamge(QImage currentImage, int id);
+    QByteArray scan(QImage *currentImage);
+    //DmtxImage *dmImg;
+    //DmtxDecode *dmDec;
+    //DmtxRegion *dmReg;
+    //DmtxMessage *dmMsg;
+    //QRect rect;
 
 signals:
-    void scan_ok();
+    void throwInfo(QRect rect);
 };
 
 #endif // SCANTHREAD_H

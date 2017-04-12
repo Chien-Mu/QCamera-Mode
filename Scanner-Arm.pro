@@ -33,7 +33,17 @@ macx{
     #libdmtx
     INCLUDEPATH += /usr/local/include
     LIBS += `pkg-config --libs libdmtx`
- }
+}
+unix{
+    #libdmtx
+    INCLUDEPATH += /home/levy/raspi/sysroot/usr/include
+    LIBS += -L/home/levy/raspi/sysroot/usrlib -ldmtx
+}
+win32{
+    #libdmtx
+    INCLUDEPATH += C:\libdmtx-libdmtx\include
+    LIBS += C:\libdmtx-libdmtx\libdmtx.lib
+}
 
 #Cross Compile
 #target.path = /home/pi/test

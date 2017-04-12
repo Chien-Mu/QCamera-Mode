@@ -1,4 +1,4 @@
-#include "camera.h"
+﻿#include "camera.h"
 #include <QDebug>
 #include <QMessageBox>
 
@@ -42,6 +42,10 @@ void Camera::setCamera(QByteArray deviceName){
     //error
     connect(imageCapture,SIGNAL(error(int,QCameraImageCapture::Error,QString)),
             this,SIGNAL(Error(int,QCameraImageCapture::Error,QString)));
+}
+
+void Camera::drawVideoWidget(QRect rect){
+    videoWidget->draw(rect);
 }
 
 void Camera::CameraStrat(){

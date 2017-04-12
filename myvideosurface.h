@@ -1,4 +1,4 @@
-#ifndef MYVIDEOSURFACE_H
+﻿#ifndef MYVIDEOSURFACE_H
 #define MYVIDEOSURFACE_H
 
 #include <QAbstractVideoSurface>
@@ -10,6 +10,7 @@
 struct ImageFrame{
     QImage image;
     int id;
+    bool isRepeat;
 };
 
 //實作 QAbstractVideoSurface 抽象類別
@@ -25,7 +26,7 @@ public:
     bool present(const QVideoFrame &frame);
 
     void paintImage(QPainter *painter); //讓外界的 painter 可以進來被劃上image
-    ImageFrame getCurrentImage();
+    ImageFrame *getCurrentImage();
 
 private:
     QWidget *widget;

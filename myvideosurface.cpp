@@ -1,4 +1,4 @@
-#include "myvideosurface.h"
+﻿#include "myvideosurface.h"
 
 MyVideoSurface::MyVideoSurface(QWidget *widget,int W,int H, QObject *parent) : QAbstractVideoSurface(parent)
 {
@@ -55,6 +55,8 @@ void MyVideoSurface::paintImage(QPainter *painter)
                     currentFrame.bytesPerLine(),
                     QVideoFrame::imageFormatFromPixelFormat(currentFrame.pixelFormat()));
         image = image.scaled(W,H);
+        //image = image.mirrored(); //windows 相機畫面會變鏡像，要倒過來
+
         painter->drawImage(0,0,image);
         currentImage.image = image.convertToFormat(QImage::Format_Grayscale8);
 
@@ -65,6 +67,6 @@ void MyVideoSurface::paintImage(QPainter *painter)
     }
 }
 
-ImageFrame MyVideoSurface::getCurrentImage(){
-    return currentImage;
+ImageFrame* MyVideoSurface::getCurrentImage(){
+    return &currentImage;
 }

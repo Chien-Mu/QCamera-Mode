@@ -1,9 +1,13 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 #include <QDebug>
 #include <QMessageBox>
 #include <QCameraInfo>
 #include <QSpacerItem>
+
+#include "scanthread.h"
+scanthread *scanner;
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWindow)
 {
@@ -20,9 +24,8 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
     TmpID = -1;
 
     //scanner
-    scanner = new scanthread;
-    connect(this,SIGNAL(throwImage(QImage,int)),scanner,SLOT(receiveIamge(QImage,int)));
-    connect(scanner,SIGNAL(scan_ok()),this,SLOT(on_Capture()));
+    scanner = new scanthread(this);
+    connect(scanner,SIGNAL(throwInfo(QRect)),camera,SLOT(drawVideoWidget(QRect)));
 
     //initialization
     initialization();
@@ -49,15 +52,22 @@ bool MainWindow::initialization(){
     return true;
 }
 
-void MainWindow::on_Capture(){
-    currentImage = camera->getCurrentImage();
+ImageFrame* MainWindow::on_Capture(){
+    ImageFrame *currentImage_ptr = camera->getCurrentImage();
 
-    //一樣的圖就不處理
-    if(currentImage.id != TmpID){
-        emit throwImage(currentImage.image,currentImage.id);
-    }
+    //by value
+    this->currentImage.id = currentImage_ptr->id;
+    this->currentImage.image = currentImage_ptr->image.copy();
+
+    //一樣的圖標記處
+    if(currentImage.id != TmpID)
+        this->currentImage.isRepeat = false;
+    else
+        this->currentImage.isRepeat = false;
 
     TmpID = currentImage.id; //update
+
+    return &this->currentImage;
 }
 
 void MainWindow::displayCaptureError(int id, QCameraImageCapture::Error error, const QString &errorString){

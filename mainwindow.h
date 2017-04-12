@@ -1,12 +1,11 @@
-#ifndef MAINWINDOW_H
+﻿#ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
 #include <QMainWindow>
 #include <QPlainTextEdit>
 #include <QImage>
 
-#include <camera.h>
-#include "scanthread.h"
+#include "camera.h"
 
 namespace Ui {
 class MainWindow;
@@ -20,21 +19,17 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     bool initialization();
+    ImageFrame *on_Capture();
 
 private:
     Ui::MainWindow *ui;
     Camera *camera;
     QPlainTextEdit *formText;
-    scanthread *scanner;
-    ImageFrame currentImage;
     int TmpID;
+    ImageFrame currentImage;
 
 private slots:
-    void on_Capture();
     void displayCaptureError(int id,QCameraImageCapture::Error error,const QString &errorString);
-
-signals:
-    void throwImage(QImage value,int id);
 };
 
 #endif // MAINWINDOW_H
