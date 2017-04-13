@@ -18,7 +18,7 @@ void scanthread::run(){
     while(!quit){
         ImageFrame *currentImage = ref->on_Capture();
 
-        //一樣的圖不出裡
+        //一樣的圖不處理
         if(currentImage->isRepeat || currentImage->image.isNull()){
             msleep(100);
             continue;
@@ -26,6 +26,9 @@ void scanthread::run(){
 
         //scanner
         if(!quit){
+            //*currentImage 的 image 內容值一樣是 reference
+            //但 currentImage->image     會傳出另一處實體 image 的 value
+            //而 &currentImage->image    會傳出另一處實體 image 的 reference
             SN = scan(&currentImage->image);
             qDebug() << "Decode: " << SN;
         }

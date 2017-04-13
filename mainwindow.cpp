@@ -55,11 +55,11 @@ bool MainWindow::initialization(){
 ImageFrame* MainWindow::on_Capture(){
     ImageFrame *currentImage_ptr = camera->getCurrentImage();
 
-    //by value
+    //by value (當一個傳送的中繼站，怕後面處理太久，前面圖系統會突然自動release)
     this->currentImage.id = currentImage_ptr->id;
-    this->currentImage.image = currentImage_ptr->image.copy();
+    this->currentImage.image = currentImage_ptr->image; //這裡不用加 copy() 也是 by value
 
-    //一樣的圖標記處
+    //若圖有重複則記處
     if(currentImage.id != TmpID)
         this->currentImage.isRepeat = false;
     else
