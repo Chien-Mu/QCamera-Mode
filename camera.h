@@ -25,7 +25,7 @@ public:
     ImageFrame* getCurrentImage() { return videoWidget->refImageSurface()->getCurrentImage(); } //丟圖
 
 public slots:
-    void drawVideoWidget(QRect rect);
+    void drawVideoWidget(QRect *rects , int rectCount);
 
 private:
     //camera and control

@@ -20,6 +20,8 @@ public:
     ~MainWindow();
     bool initialization();
     ImageFrame *on_Capture();
+    void start();
+    void stop();
 
 private:
     Ui::MainWindow *ui;
@@ -27,6 +29,7 @@ private:
     QPlainTextEdit *formText;
     int TmpID;
     ImageFrame currentImage;
+    VideoWidget *videoWidget;
 
 private slots:
     void displayCaptureError(int id,QCameraImageCapture::Error error,const QString &errorString);

@@ -11,7 +11,7 @@ public:
     ~VideoWidget();
     QAbstractVideoSurface *refVideoSurface() const { return surface; } //已 QAbstractVideoSurface 傳給外界(取景器)
     MyVideoSurface *refImageSurface() { return surface; } //已 MyVideoSurface 傳給外界(取圖用)
-    void draw(QRect rect);
+    void draw(QRect *rects, int rectCount);
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -22,7 +22,8 @@ private:
     int H;
     QPen pen;
     QPainter painter;
-    QRect rect;
+    QRect *rects;
+    int rectCount;
 };
 
 #endif // VIDEOWIDGET_H

@@ -16,19 +16,16 @@ public:
     //void setScan();
     void run();
     void stop();
+    QRect rects[2];
+    int rectCount;
 
 private:
     MainWindow *ref;
     bool quit;
     QByteArray scan(QImage *currentImage);
-    //DmtxImage *dmImg;
-    //DmtxDecode *dmDec;
-    //DmtxRegion *dmReg;
-    //DmtxMessage *dmMsg;
-    //QRect rect;
 
 signals:
-    void throwInfo(QRect rect);
+    void throwInfo(QRect*,int);
 };
 
 #endif // SCANTHREAD_H

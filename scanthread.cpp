@@ -32,18 +32,17 @@ void scanthread::run(){
             SN = scan(&currentImage->image);
             qDebug() << "Decode: " << SN;
         }
-        msleep(100);
+        //msleep(400); //error
     }
 }
 
 QByteArray scanthread::scan(QImage *currentImage){
     QByteArray SN;
-    QRect rect;
 
-    DmtxImage *dmImg;// = new DmtxImage;
-    DmtxDecode *dmDec;// = new DmtxDecode;
-    DmtxRegion *dmReg;// = new DmtxRegion;
-    DmtxMessage *dmMsg;// = new DmtxMessage;
+    DmtxImage *dmImg;
+    DmtxDecode *dmDec;
+    DmtxRegion *dmReg;
+    DmtxMessage *dmMsg;
     DmtxTime timeout;
 
     //position
@@ -69,27 +68,19 @@ QByteArray scanthread::scan(QImage *currentImage){
     //dmtxDecodeSetProp(dmDec, DmtxPropScanGap, 1); //gap
     //dmtxDecodeSetProp(dmDec, DmtxPropEdgeThresh, 100); //threshold 越高速度越快
 
-    //再迴圈內定義成找一個條碼 不能超過 timeoutMS 時間
-    //再迴圈外定義成找 ScanLimit 個條碼 不能超過 timeoutMS 時間
-    int timeoutMS = 200;
+    // dmtxTimeAdd()再迴圈內定義成找一個條碼 不能超過 timeoutMS 時間
+    // dmtxTimeAdd()再迴圈外定義成找 ScanLimit 個條碼 不能超過 timeoutMS 時間
+    int timeoutMS = 300;
     int ScanCount=0;
-    int ScanLimit=1;
-    while(ScanCount < ScanLimit){
+    int ScanLimit=2;
+    for(int i=0;i<ScanLimit;i++){
         timeout = dmtxTimeAdd(dmtxTimeNow(),timeoutMS); // timeout
-        //dmtxDecodeSetProp(dmDec, DmtxPropXmin, (int)(p10.X + 0.5)); //skip
         dmReg = dmtxRegionFindNext(dmDec,&timeout); //find
-        if(dmReg == NULL){
-            rect.setX(0);
-            rect.setY(0);
-            rect.setWidth(0);
-            rect.setHeight(0);
-            emit throwInfo(rect);
+        if(dmReg == NULL)
             break;
-        }
 
         dmMsg = dmtxDecodeMatrixRegion(dmDec,dmReg,DmtxUndefined); //decode
         if(dmMsg != NULL){
-            //char* to QString(雖然型態是uchar，不過原廠是轉char)
             SN = (char*)dmMsg->output;
 
             //position information
@@ -104,25 +95,21 @@ QByteArray scanthread::scan(QImage *currentImage){
             //qDebug() << (int)(p10.X + 0.5) << p_height - 1 - (int)(p10.Y + 0.5);
             //qDebug() << (int)(p11.X + 0.5) << p_height - 1 - (int)(p11.Y + 0.5);
             //qDebug() << (int)(p01.X + 0.5) << p_height - 1 - (int)(p01.Y + 0.5);
-            rect.setX((int)(p01.X + 0.5));
-            rect.setY(p_height - 1 - (int)(p01.Y + 0.5));
-            rect.setWidth((int)(p11.X + 0.5) - rect.x());
-            rect.setHeight((p_height - 1 - (int)(p00.Y + 0.5)) - rect.y());
-            emit throwInfo(rect);
+            rects[ScanCount].setX((int)(p01.X + 0.5));
+            rects[ScanCount].setY(p_height - 1 - (int)(p01.Y + 0.5));
+            rects[ScanCount].setWidth((int)(p11.X + 0.5) - rects[ScanCount].x());
+            rects[ScanCount].setHeight((p_height - 1 - (int)(p00.Y + 0.5)) - rects[ScanCount].y());
+            ScanCount++;
 
             dmtxMessageDestroy(&dmMsg);
         }
         //default
-        ScanCount++;
         dmtxRegionDestroy(&dmReg);
     }
+    emit throwInfo(rects,ScanCount);
+    //qDebug() << "ScanCount" << QString::number(ScanCount);
 
     dmtxDecodeDestroy(&dmDec);
     dmtxImageDestroy(&dmImg);
-
-    /*delete dmImg;
-    delete dmDec;
-    delete dmReg;
-    delete dmMsg;*/
     return SN;
 }

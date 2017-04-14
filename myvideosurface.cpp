@@ -29,7 +29,7 @@ bool MyVideoSurface::present(const QVideoFrame &frame)
     Q_UNUSED(frame);
 
     // Handle the frame and do your processing
-    if (frame.isValid()) {
+    if (frame.isValid()){
         currentFrame = frame;
 
         widget->repaint(); //通知外界的 widget 觸發 eventpaint 事件
@@ -58,7 +58,7 @@ void MyVideoSurface::paintImage(QPainter *painter)
         //image = image.mirrored(); //windows 相機畫面會變鏡像，要倒過來
 
         painter->drawImage(0,0,image);
-        currentImage.image = image.convertToFormat(QImage::Format_Grayscale8);
+        currentImage.image = image.convertToFormat(QImage::Format_Grayscale8).copy();
 
         currentFrame.unmap();
         _id++;

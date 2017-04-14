@@ -25,10 +25,14 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
 
     //scanner
     scanner = new scanthread(this);
-    connect(scanner,SIGNAL(throwInfo(QRect)),camera,SLOT(drawVideoWidget(QRect)));
+    connect(camera,SIGNAL(Error(int,QCameraImageCapture::Error,QString)),
+            this,SLOT(displayCaptureError(int,QCameraImageCapture::Error,QString)));
 
     //initialization
     initialization();
+
+    //draw
+    connect(scanner,SIGNAL(throwInfo(QRect*,int)),camera,SLOT(drawVideoWidget(QRect*,int))); //一定要在 initialization() 之後
 
     //ui
     formText = new QPlainTextEdit(this);
@@ -44,12 +48,24 @@ bool MainWindow::initialization(){
 
     //camera set
     camera->setCamera(cameras[0].deviceName().toLocal8Bit());
-    connect(camera,SIGNAL(Error(int,QCameraImageCapture::Error,QString)),
-            this,SLOT(displayCaptureError(int,QCameraImageCapture::Error,QString)));
     camera->CameraStrat();
+
     scanner->start();
 
     return true;
+}
+
+void MainWindow::start(){
+    if(scanner->isRunning())
+        return;
+
+    initialization();
+}
+
+void MainWindow::stop(){
+    camera->CameraStop();
+    scanner->stop();
+    qDebug() << "stop";
 }
 
 ImageFrame* MainWindow::on_Capture(){
@@ -78,5 +94,6 @@ void MainWindow::displayCaptureError(int id, QCameraImageCapture::Error error, c
 
 MainWindow::~MainWindow()
 {
+    stop();
     delete ui;
 }
