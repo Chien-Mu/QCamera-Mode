@@ -32,7 +32,7 @@ void scanthread::run(){
             SN = scan(&currentImage->image);
             qDebug() << "Decode: " << SN;
         }
-        //msleep(400); //error
+        msleep(200);
     }
 }
 
@@ -70,7 +70,7 @@ QByteArray scanthread::scan(QImage *currentImage){
 
     // dmtxTimeAdd()再迴圈內定義成找一個條碼 不能超過 timeoutMS 時間
     // dmtxTimeAdd()再迴圈外定義成找 ScanLimit 個條碼 不能超過 timeoutMS 時間
-    int timeoutMS = 300;
+    int timeoutMS = 200;
     int ScanCount=0;
     int ScanLimit=2;
     for(int i=0;i<ScanLimit;i++){

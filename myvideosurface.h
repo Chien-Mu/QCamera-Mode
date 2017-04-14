@@ -26,7 +26,7 @@ public:
     bool present(const QVideoFrame &frame);
 
     void paintImage(QPainter *painter); //讓外界的 painter 可以進來被劃上image
-    ImageFrame *getCurrentImage();
+    ImageFrame getCurrentImage();
 
 private:
     QWidget *widget;

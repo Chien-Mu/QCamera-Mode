@@ -20,6 +20,13 @@ void VideoWidget::draw(QRect *rects ,int rectCount){
         return;
     }
 
+    //check
+    for(int i=0;i<rectCount;i++)
+        if(rects[i].isNull() || rects[i].isEmpty()){
+            this->rectCount =0;
+            return;
+        }
+
     this->rects = rects;
     this->rectCount = rectCount;
 }

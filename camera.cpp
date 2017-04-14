@@ -31,11 +31,11 @@ void Camera::setCamera(QByteArray deviceName){
 
     //設定捕捉過程
     imageCapture = new QCameraImageCapture(cameraDevice); //QCameraImageCapture 為設定捕捉過程，他本身不能捕捉
-    imageCapture->setCaptureDestination(QCameraImageCapture::CaptureToBuffer); //選擇將捕抓內容放在 檔案 或 記憶體
+    imageCapture->setCaptureDestination(QCameraImageCapture::CaptureToFile); //選擇將捕抓內容放在 檔案 或 記憶體
 
     //設定相機抓傳入時解析度
     QImageEncoderSettings imageSettings; //QImageEncoderSettings 為設定影像編碼選項
-    imageSettings.setCodec("image/jpeg");
+    //imageSettings.setCodec("image/jpeg");
     imageSettings.setResolution(W,H);
     imageCapture->setEncodingSettings(imageSettings); //匯入設定影像編碼選項
 

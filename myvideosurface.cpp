@@ -46,7 +46,6 @@ void MyVideoSurface::paintImage(QPainter *painter)
     //如果映射模式為WriteOnly，則原本的VideoFrame將會受到更改
     //當不再需要訪問數據時，請用unmap()函數釋放映射的memory
     if (currentFrame.map(QAbstractVideoBuffer::ReadOnly)) {
-        currentImage.id = _id; //給每張圖id
 
         QImage image(
                     currentFrame.bits(),
@@ -54,19 +53,22 @@ void MyVideoSurface::paintImage(QPainter *painter)
                     currentFrame.height(),
                     currentFrame.bytesPerLine(),
                     QVideoFrame::imageFormatFromPixelFormat(currentFrame.pixelFormat()));
+        currentFrame.unmap(); //不能在後面釋放，會拖累整個速度，使用完就要釋放速度差很多。
+
+        currentImage.id = _id; //給每張圖id
         image = image.scaled(W,H);
         //image = image.mirrored(); //windows 相機畫面會變鏡像，要倒過來
 
         painter->drawImage(0,0,image);
-        currentImage.image = image.convertToFormat(QImage::Format_Grayscale8).copy();
+        currentImage.image = image;
 
-        currentFrame.unmap();
         _id++;
         if(_id >= 1000) //1000後一個循環
             _id = 0;
     }
 }
 
-ImageFrame* MyVideoSurface::getCurrentImage(){
-    return &currentImage;
+ImageFrame MyVideoSurface::getCurrentImage(){
+    currentImage.image = currentImage.image.convertToFormat(QImage::Format_Grayscale8);
+    return currentImage;
 }
