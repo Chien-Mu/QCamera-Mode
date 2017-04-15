@@ -30,9 +30,9 @@ void scanthread::run(){
             //但 currentImage->image     會傳出另一處實體 image 的 value
             //而 &currentImage->image    會傳出另一處實體 image 的 reference
             SN = scan(&currentImage->image);
-            qDebug() << "Decode: " << SN;
+            //qDebug() << "Decode: " << SN;
         }
-        msleep(200);
+        //msleep(200);
     }
 }
 

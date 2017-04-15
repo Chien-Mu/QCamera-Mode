@@ -5,6 +5,7 @@ MyVideoSurface::MyVideoSurface(QWidget *widget,int W,int H, QObject *parent) : Q
     this->widget = widget;
     this->W = W;
     this->H = H;
+    this->isGet = true;
     this->_id = 0;
 }
 
@@ -55,20 +56,30 @@ void MyVideoSurface::paintImage(QPainter *painter)
                     QVideoFrame::imageFormatFromPixelFormat(currentFrame.pixelFormat()));
         currentFrame.unmap(); //不能在後面釋放，會拖累整個速度，使用完就要釋放速度差很多。
 
-        currentImage.id = _id; //給每張圖id
+
         image = image.scaled(W,H);
         //image = image.mirrored(); //windows 相機畫面會變鏡像，要倒過來
-
         painter->drawImage(0,0,image);
-        currentImage.image = image;
 
-        _id++;
-        if(_id >= 1000) //1000後一個循環
-            _id = 0;
+        //如果沒有在擷取
+        if(!isGet){
+            currentImage.id = _id; //給每張圖id
+            currentImage.image = image;
+
+            _id++;
+            if(_id >= 1000) //1000後一個循環
+                _id = 0;
+        }
     }
 }
 
 ImageFrame MyVideoSurface::getCurrentImage(){
-    currentImage.image = currentImage.image.convertToFormat(QImage::Format_Grayscale8);
-    return currentImage;
+    isGet = true;
+
+    ImageFrame _image;
+    _image.image = currentImage.image.convertToFormat(QImage::Format_Grayscale8);
+    _image.id = currentImage.id;
+    isGet = false;
+
+    return _image;
 }

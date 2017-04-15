@@ -35,6 +35,7 @@ private:
     int _id;
     int W;
     int H;
+    volatile bool isGet;
 };
 
 #endif // MYVIDEOSURFACE_H

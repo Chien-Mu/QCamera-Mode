@@ -36,12 +36,12 @@ macx{
 }
 unix{
     #libdmtx
-    INCLUDEPATH += /home/levy/raspi/sysroot/usr/include
-    LIBS += -L/home/levy/raspi/sysroot/usrlib -ldmtx
+    #INCLUDEPATH += /home/levy/raspi/sysroot/usr/include
+    #LIBS += -L/home/levy/raspi/sysroot/usrlib -ldmtx
 
     #Cross Compile
-    target.path = /home/pi/test
-    INSTALLS += target
+    #target.path = /home/pi/test
+    #INSTALLS += target
 }
 win32{
     #libdmtx
