@@ -31,7 +31,7 @@ public:
 private:
     QWidget *widget;
     QVideoFrame currentFrame;
-    ImageFrame currentImage;
+    ImageFrame _image;
     int _id;
     int W;
     int H;

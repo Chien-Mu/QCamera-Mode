@@ -63,8 +63,8 @@ void MyVideoSurface::paintImage(QPainter *painter)
 
         //如果沒有在擷取
         if(!isGet){
-            currentImage.id = _id; //給每張圖id
-            currentImage.image = image;
+            _image.id = _id; //給每張圖id
+            _image.image = image;
 
             _id++;
             if(_id >= 1000) //1000後一個循環
@@ -73,13 +73,14 @@ void MyVideoSurface::paintImage(QPainter *painter)
     }
 }
 
+//不可兩個執行緒同時呼叫此函式，不然就算加了isGet也會不穩
 ImageFrame MyVideoSurface::getCurrentImage(){
     isGet = true;
 
-    ImageFrame _image;
-    _image.image = currentImage.image.convertToFormat(QImage::Format_Grayscale8);
-    _image.id = currentImage.id;
+    ImageFrame currentImage;
+    currentImage.image = _image.image.convertToFormat(QImage::Format_Grayscale8);
+    currentImage.id = _image.id;
     isGet = false;
 
-    return _image;
+    return currentImage;
 }

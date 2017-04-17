@@ -1,4 +1,5 @@
 ﻿#include "videowidget.h"
+#include <QDebug>
 
 VideoWidget::VideoWidget(int W, int H, QWidget *parent) : QWidget(parent)
 {
@@ -16,14 +17,15 @@ VideoWidget::~VideoWidget(){
 
 void VideoWidget::draw(QRect *rects ,int rectCount){
     if(rects->isNull()){
-        this->rectCount =0;
+        this->rectCount = 0;
         return;
     }
 
     //check
     for(int i=0;i<rectCount;i++)
         if(rects[i].isNull() || rects[i].isEmpty()){
-            this->rectCount =0;
+            this->rectCount = 0;
+            qDebug() << "isNull error";
             return;
         }
 
