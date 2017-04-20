@@ -37,6 +37,7 @@ void VideoWidget::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
     if (surface->isActive()) {
+        surface->Drawing(true);
         painter.begin(this); //把widget 當畫板
         surface->paintImage(&painter); //從記憶體取得圖
 
@@ -46,5 +47,6 @@ void VideoWidget::paintEvent(QPaintEvent *event)
         painter.setPen(pen);
         painter.drawRects(this->rects,this->rectCount); //在畫上矩形
         painter.end();
+        surface->Drawing(false);
     }
 }
