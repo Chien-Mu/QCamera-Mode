@@ -50,7 +50,7 @@ bool MainWindow::initialization(){
     camera->setCamera(cameras[0].deviceName().toLocal8Bit());
     camera->CameraStrat();
 
-    scanner->start();
+    //scanner->start();
 
     return true;
 }
