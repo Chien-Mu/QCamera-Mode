@@ -19,7 +19,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     bool initialization();
-    ImageFrame *on_Capture();
+    ImageFrame on_Capture();
     void start();
     void stop();
 

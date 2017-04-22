@@ -16,10 +16,10 @@ void scanthread::run(){
     QByteArray SN;
 
     while(!quit){
-        ImageFrame *currentImage = ref->on_Capture();
+        ImageFrame currentImage = ref->on_Capture();
 
         //一樣的圖不處理
-        if(currentImage->isRepeat || currentImage->image.isNull()){
+        if(currentImage.isRepeat || currentImage.image.isNull()){
             msleep(100);
             continue;
         }
@@ -29,14 +29,14 @@ void scanthread::run(){
             //*currentImage 的 image 內容值一樣是 reference
             //但 currentImage->image     會傳出另一處實體 image 的 value
             //而 &currentImage->image    會傳出另一處實體 image 的 reference
-            SN = scan(&currentImage->image);
+            SN = scan(currentImage.image);
             //qDebug() << "Decode: " << SN;
         }
         //msleep(200);
     }
 }
 
-QByteArray scanthread::scan(QImage *currentImage){
+QByteArray scanthread::scan(QImage currentImage){
     QByteArray SN;
 
     DmtxImage *dmImg;
@@ -51,7 +51,7 @@ QByteArray scanthread::scan(QImage *currentImage){
     p10.X = p01.Y = p11.X = p11.Y = 1.0;
     int p_height;
 
-    dmImg = dmtxImageCreate(currentImage->bits(),currentImage->width(),currentImage->height(),DmtxPack8bppK);
+    dmImg = dmtxImageCreate(currentImage.bits(),currentImage.width(),currentImage.height(),DmtxPack8bppK);
     if(dmImg == NULL)
         return "-1";
 

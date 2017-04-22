@@ -22,7 +22,7 @@ public:
 private:
     MainWindow *ref;
     bool quit;
-    QByteArray scan(QImage *currentImage);
+    QByteArray scan(QImage currentImage);
 
 signals:
     void throwInfo(QRect*,int);
