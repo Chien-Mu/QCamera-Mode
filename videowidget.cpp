@@ -38,7 +38,8 @@ void VideoWidget::paintEvent(QPaintEvent *event)
     Q_UNUSED(event);
     if (surface->isActive()) {
         surface->Drawing(true);
-        painter.begin(this); //把widget 當畫板
+        QPainter painter; //把widget 當畫板
+        painter.begin(this); //實驗這樣把 .begin() .end() 寫出來效率會更快
         surface->paintImage(&painter); //從記憶體取得圖
 
         //draw

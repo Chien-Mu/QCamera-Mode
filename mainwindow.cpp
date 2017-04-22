@@ -68,7 +68,7 @@ void MainWindow::stop(){
     qDebug() << "stop";
 }
 
-ImageFrame MainWindow::on_Capture(){
+ImageFrame* MainWindow::on_Capture(){
     //ImageFrame *currentImage_ptr = camera->getCurrentImage();
 
     //by value (當一個傳送的中繼站，怕後面處理太久，前面圖系統會突然自動release)
@@ -86,7 +86,7 @@ ImageFrame MainWindow::on_Capture(){
 
     TmpID = currentImage.id; //update
 
-    return this->currentImage;
+    return &this->currentImage;
 }
 
 void MainWindow::displayCaptureError(int id, QCameraImageCapture::Error error, const QString &errorString){

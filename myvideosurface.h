@@ -27,6 +27,7 @@ public:
 
     void paintImage(QPainter *painter); //讓外界的 painter 可以進來被劃上image
     void Drawing(bool isDraw);
+    void getlock();
     ImageFrame getCurrentImage();
 
 private:

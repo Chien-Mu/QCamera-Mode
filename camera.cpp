@@ -44,6 +44,11 @@ void Camera::setCamera(QByteArray deviceName){
             this,SIGNAL(Error(int,QCameraImageCapture::Error,QString)));
 }
 
+ImageFrame Camera::getCurrentImage(){
+    videoWidget->refImageSurface()->getlock();
+    return videoWidget->refImageSurface()->getCurrentImage();
+}
+
 void Camera::drawVideoWidget(QRect *rects , int rectCount){
     videoWidget->draw(rects,rectCount);
 }

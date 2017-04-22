@@ -35,7 +35,7 @@ bool MyVideoSurface::present(const QVideoFrame &frame)
     if (frame.isValid()){
         currentFrame = frame;
 
-        if(!this->isDraw)
+        if(!this->isDraw) //測試後發現 paint 本身有保護
             widget->repaint(); //通知外界的 widget 觸發 eventpaint 事件
 
         return true;
@@ -58,14 +58,19 @@ void MyVideoSurface::paintImage(QPainter *painter)
                     currentFrame.bytesPerLine(),
                     QVideoFrame::imageFormatFromPixelFormat(currentFrame.pixelFormat()));
 
+        if(image.isNull()){
+            qDebug() << "paintImage image.isNull()";
+            return;
+        }
+
         image = image.scaled(W,H);
         //image = image.mirrored(); //windows 相機畫面會變鏡像，要倒過來
         painter->drawImage(0,0,image);
 
         //如果沒有在擷取
         if(!isGet){
-            _image.id = _id; //給每張圖id
             _image.image = image;
+            _image.id = _id; //給每張圖id
 
             _id++;
             if(_id >= 1000) //1000後一個循環
@@ -80,9 +85,11 @@ void MyVideoSurface::Drawing(bool isDraw){
 }
 
 //不可兩個執行緒同時呼叫此函式，不然就算加了isGet也會不穩
-ImageFrame MyVideoSurface::getCurrentImage(){
+void MyVideoSurface::getlock(){
     isGet = true;
+}
 
+ImageFrame MyVideoSurface::getCurrentImage(){
     ImageFrame currentImage;
     currentImage.image = _image.image.convertToFormat(QImage::Format_Grayscale8);
     currentImage.id = _image.id;

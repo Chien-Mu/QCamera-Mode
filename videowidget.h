@@ -21,7 +21,6 @@ private:
     int W;
     int H;
     QPen pen;
-    QPainter painter;
     QRect *rects;
     int rectCount;
 };
