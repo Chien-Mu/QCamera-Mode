@@ -26,7 +26,6 @@ private:
     QPen pen;
     QVector<QRect> rects;
     QVector<QRect> rect_null;
-    int rectTotal;
     bool isPush;
 };
 

@@ -5,14 +5,6 @@ scanthread::scanthread(MainWindow *ref)
 {
     this->ref = ref;
     this->quit = false;
-    info.total = 0;
-    for(int i =0;i<SCANTOTAL ;i++){
-        info.infoSN[i].SN = "";
-        info.infoSN[i].rects.setX(0);
-        info.infoSN[i].rects.setY(0);
-        info.infoSN[i].rects.setWidth(0);
-        info.infoSN[i].rects.setHeight(0);
-    }
 }
 
 void scanthread::stop(){
@@ -78,6 +70,15 @@ QByteArray scanthread::scan(QImage *currentImage){
     int timeoutMS = 200;
     int ScanCount=0;
     int ScanLimit=SCANTOTAL;
+    info.total = 0;
+    for(int i =0;i<ScanLimit ;i++){
+        info.infoSN[i].SN = "";
+        info.infoSN[i].rects.setX(0);
+        info.infoSN[i].rects.setY(0);
+        info.infoSN[i].rects.setWidth(0);
+        info.infoSN[i].rects.setHeight(0);
+    }
+
     for(int i=0;i<ScanLimit;i++){
         //defualt
         timeout = dmtxTimeAdd(dmtxTimeNow(),timeoutMS); // timeout
@@ -117,7 +118,7 @@ QByteArray scanthread::scan(QImage *currentImage){
     }
     info.total = ScanCount;
     emit throwInfo(info);
-    qDebug() << "ScanCount" << QString::number(ScanCount);
+    //qDebug() << "ScanCount" << QString::number(ScanCount);
 
     dmtxDecodeDestroy(&dmDec);
     dmtxImageDestroy(&dmImg);

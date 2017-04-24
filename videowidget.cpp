@@ -6,7 +6,6 @@ VideoWidget::VideoWidget(int W, int H, QWidget *parent) : QWidget(parent)
     this->W = W;
     this->H = H;
     this->isPush = true;
-    this->rectTotal= 0;
     QRect rect_null(0,0,0,0);
     this->rect_null.push_back(rect_null);
     for(int i=0;i<SCANTOTAL;i++)
@@ -25,24 +24,12 @@ void VideoWidget::lock(){
 }
 
 void VideoWidget::draw(INFO info){
-    if(info.total == 0){
-        for(int i=0;i<SCANTOTAL;i++)
+    for(int i=0;i<SCANTOTAL;i++){
+        if(i<info.total || !info.infoSN[i].rects.isNull() || !info.infoSN[i].rects.isEmpty())
+            this->rects[i] = info.infoSN[i].rects;
+        else
             this->rects[i] = this->rect_null[0];
-        isPush = false;
-        return;
-    }else
-        this->rectTotal = info.total;
-
-    //check
-    for(int i=0;i<rectTotal;i++)
-        if(info.infoSN[i].rects.isNull() || info.infoSN[i].rects.isEmpty()){
-            qDebug() << "isNull error";
-            isPush = false;
-            return;
-        }
-
-    for(int i=0;i<rectTotal;i++)
-        this->rects[i] = info.infoSN[i].rects;
+    }
 
     isPush = false;
 }
