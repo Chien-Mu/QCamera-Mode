@@ -7,6 +7,7 @@
 #include <dmtx.h>
 
 #include "mainwindow.h"
+#include "shared.h"
 
 class scanthread : public QThread
 {
@@ -16,7 +17,7 @@ public:
     //void setScan();
     void run();
     void stop();
-    QRect rects[2];
+    INFO info;
     int rectCount;
 
 private:
@@ -25,7 +26,7 @@ private:
     QByteArray scan(QImage *currentImage);
 
 signals:
-    void throwInfo(QRect*,int);
+    void throwInfo(const INFO value);
 };
 
 #endif // SCANTHREAD_H

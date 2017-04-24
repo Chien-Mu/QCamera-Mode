@@ -2,7 +2,9 @@
 #define VIDEOWIDGET_H
 
 #include <QWidget>
+#include <QVector>
 #include "myvideosurface.h"
+#include "shared.h"
 
 class VideoWidget : public QWidget
 {
@@ -11,7 +13,8 @@ public:
     ~VideoWidget();
     QAbstractVideoSurface *refVideoSurface() const { return surface; } //已 QAbstractVideoSurface 傳給外界(取景器)
     MyVideoSurface *refImageSurface() { return surface; } //已 MyVideoSurface 傳給外界(取圖用)
-    void draw(QRect *rects, int rectCount);
+    void lock();
+    void draw(INFO info);
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -21,8 +24,10 @@ private:
     int W;
     int H;
     QPen pen;
-    QRect *rects;
-    int rectCount;
+    QVector<QRect> rects;
+    QVector<QRect> rect_null;
+    int rectTotal;
+    bool isPush;
 };
 
 #endif // VIDEOWIDGET_H

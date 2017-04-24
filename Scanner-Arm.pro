@@ -19,13 +19,15 @@ SOURCES += main.cpp\
     myvideosurface.cpp \
     videowidget.cpp \
     camera.cpp \
-    scanthread.cpp
+    scanthread.cpp \
+    shared.cpp
 
 HEADERS  += mainwindow.h \
     myvideosurface.h \
     videowidget.h \
     camera.h \
-    scanthread.h
+    scanthread.h \
+    shared.h
 
 FORMS    += mainwindow.ui
 

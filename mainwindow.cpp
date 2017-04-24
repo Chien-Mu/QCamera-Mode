@@ -32,7 +32,9 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
     initialization();
 
     //draw
-    connect(scanner,SIGNAL(throwInfo(QRect*,int)),camera,SLOT(drawVideoWidget(QRect*,int))); //一定要在 initialization() 之後
+    qRegisterMetaType<INFO>("INFO");
+    connect(scanner,SIGNAL(throwInfo(INFO)),camera,SLOT(drawVideoWidget(INFO))); //一定要在 initialization() 之後
+
 
     //ui
     formText = new QPlainTextEdit(this);

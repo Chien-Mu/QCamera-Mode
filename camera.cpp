@@ -49,8 +49,9 @@ QImage Camera::getCurrentImage(){
     return videoWidget->refImageSurface()->getCurrentImage();
 }
 
-void Camera::drawVideoWidget(QRect *rects , int rectCount){
-    videoWidget->draw(rects,rectCount);
+void Camera::drawVideoWidget(INFO info){
+    videoWidget->lock();
+    videoWidget->draw(info);
 }
 
 void Camera::CameraStrat(){

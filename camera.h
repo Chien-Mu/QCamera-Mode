@@ -8,7 +8,7 @@
 #include <QImageEncoderSettings>
 
 #include "videowidget.h"
-#include "myvideosurface.h" //ImageFrame
+#include "shared.h"
 
 class Camera : public QObject
 {
@@ -25,7 +25,7 @@ public:
     QImage getCurrentImage(); //丟圖
 
 public slots:
-    void drawVideoWidget(QRect *rects , int rectCount);
+    void drawVideoWidget(INFO info);
 
 private:
     //camera and control
