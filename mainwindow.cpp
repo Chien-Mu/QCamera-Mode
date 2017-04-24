@@ -12,6 +12,7 @@ scanthread *scanner;
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->currentImage_ptr = 0;
 
     //為了讓camera在中心
     QSpacerItem * H_spacer = new QSpacerItem(1000,0, QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -21,7 +22,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWin
 
     //camera
     camera = new Camera;
-    TmpID = -1;
 
     //scanner
     scanner = new scanthread(this);
@@ -68,25 +68,10 @@ void MainWindow::stop(){
     qDebug() << "stop";
 }
 
-ImageFrame* MainWindow::on_Capture(){
-    //ImageFrame *currentImage_ptr = camera->getCurrentImage();
-
-    //by value (當一個傳送的中繼站，怕後面處理太久，前面圖系統會突然自動release)
-    //this->currentImage.id = currentImage_ptr->id;
-    //this->currentImage.image = currentImage_ptr->image; //這裡不用加 copy() 也是 by value
-
-    //by value
-    this->currentImage =  camera->getCurrentImage();
-
-    //若圖有重複則記處
-    if(currentImage.id != TmpID)
-        this->currentImage.isRepeat = false;
-    else
-        this->currentImage.isRepeat = false;
-
-    TmpID = currentImage.id; //update
-
-    return &this->currentImage;
+QImage* MainWindow::on_Capture(){
+    this->currentImage =  camera->getCurrentImage(); //by value
+    this->currentImage_ptr = &this->currentImage;
+    return currentImage_ptr;
 }
 
 void MainWindow::displayCaptureError(int id, QCameraImageCapture::Error error, const QString &errorString){

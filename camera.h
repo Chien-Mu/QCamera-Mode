@@ -22,7 +22,7 @@ public:
 
     //get
     QWidget *getVideoWidget() { return videoWidget; } //丟出畫版
-    ImageFrame getCurrentImage(); //丟圖
+    QImage getCurrentImage(); //丟圖
 
 public slots:
     void drawVideoWidget(QRect *rects , int rectCount);

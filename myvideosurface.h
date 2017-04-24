@@ -7,12 +7,6 @@
 #include <QPainter>
 #include <QImage>
 
-struct ImageFrame{
-    QImage image;
-    int id;
-    bool isRepeat;
-};
-
 //實作 QAbstractVideoSurface 抽象類別
 class MyVideoSurface : public QAbstractVideoSurface
 {
@@ -28,13 +22,12 @@ public:
     void paintImage(QPainter *painter); //讓外界的 painter 可以進來被劃上image
     void Drawing(bool isDraw);
     void getlock();
-    ImageFrame getCurrentImage();
+    QImage getCurrentImage();
 
 private:
     QWidget *widget;
     QVideoFrame currentFrame;
-    ImageFrame _image;
-    int _id;
+    QImage _image;
     int W;
     int H;
     volatile bool isDraw;

@@ -8,7 +8,6 @@ MyVideoSurface::MyVideoSurface(QWidget *widget,int W,int H, QObject *parent) : Q
     this->H = H;
     this->isDraw = false; //一開始要讓他進去
     this->isGet = true; //一開始不能讓他進去
-    this->_id = 0;
 }
 
 QList<QVideoFrame::PixelFormat> MyVideoSurface::supportedPixelFormats(
@@ -68,14 +67,9 @@ void MyVideoSurface::paintImage(QPainter *painter)
         painter->drawImage(0,0,image);
 
         //如果沒有在擷取
-        if(!isGet){
-            _image.image = image;
-            _image.id = _id; //給每張圖id
+        if(!isGet)
+            _image = image;
 
-            _id++;
-            if(_id >= 1000) //1000後一個循環
-                _id = 0;
-        }
         currentFrame.unmap(); //不能在後面釋放，會拖累整個速度，使用完就要釋放速度差很多。
     }
 }
@@ -86,14 +80,13 @@ void MyVideoSurface::Drawing(bool isDraw){
 
 //不可兩個執行緒同時呼叫此函式，不然就算加了isGet也會不穩
 void MyVideoSurface::getlock(){
-    isGet = true;
+    this->isGet = true;
 }
 
-ImageFrame MyVideoSurface::getCurrentImage(){
-    ImageFrame currentImage;
-    currentImage.image = _image.image.convertToFormat(QImage::Format_Grayscale8);
-    currentImage.id = _image.id;
-    isGet = false;
+QImage MyVideoSurface::getCurrentImage(){
+    QImage currentImage;
+    currentImage = _image.convertToFormat(QImage::Format_Grayscale8);
+    this->isGet = false;
 
     return currentImage;
 }

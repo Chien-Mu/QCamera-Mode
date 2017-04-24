@@ -19,7 +19,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     bool initialization();
-    ImageFrame *on_Capture();
+    QImage *on_Capture();
+    QImage currentImage;
+    QImage *currentImage_ptr;
     void start();
     void stop();
 
@@ -27,8 +29,6 @@ private:
     Ui::MainWindow *ui;
     Camera *camera;
     QPlainTextEdit *formText;
-    int TmpID;
-    ImageFrame currentImage;
     VideoWidget *videoWidget;
 
 private slots:

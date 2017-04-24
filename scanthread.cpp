@@ -5,6 +5,12 @@ scanthread::scanthread(MainWindow *ref)
 {
     this->ref = ref;
     this->quit = false;
+    for(int i =0;i<2;i++){
+        rects[i].setX(0);
+        rects[i].setY(0);
+        rects[i].setWidth(0);
+        rects[i].setHeight(0);
+    }
 }
 
 void scanthread::stop(){
@@ -16,20 +22,17 @@ void scanthread::run(){
     QByteArray SN;
 
     while(!quit){
-        ImageFrame *currentImage = ref->on_Capture();
+        QImage *currentImage = ref->on_Capture();
 
-        //一樣的圖不處理
-        if(currentImage->isRepeat || currentImage->image.isNull()){
-            msleep(100);
+        //check
+        if(currentImage->isNull()){
+            msleep(200);
             continue;
         }
 
         //scanner
         if(!quit){
-            //*currentImage 的 image 內容值一樣是 reference
-            //但 currentImage->image     會傳出另一處實體 image 的 value
-            //而 &currentImage->image    會傳出另一處實體 image 的 reference
-            SN = scan(&currentImage->image);
+            SN = scan(currentImage);
             //qDebug() << "Decode: " << SN;
         }
         //msleep(200);
@@ -74,8 +77,10 @@ QByteArray scanthread::scan(QImage *currentImage){
     int ScanCount=0;
     int ScanLimit=2;
     for(int i=0;i<ScanLimit;i++){
+        //defualt
         timeout = dmtxTimeAdd(dmtxTimeNow(),timeoutMS); // timeout
         dmReg = dmtxRegionFindNext(dmDec,&timeout); //find
+
         if(dmReg == NULL)
             break;
 
