@@ -58,7 +58,8 @@ void Camera::CameraStrat(){
 }
 
 void Camera::CameraStop(){
-    cameraDevice->stop();
+    if(cameraDevice->isAvailable())
+        cameraDevice->stop();
 }
 
 void Camera::on_cameraError(){

@@ -40,7 +40,7 @@ unix:!macx{
     LIBS += -L/home/levy/raspi/sysroot/usrlib -ldmtx
 
     #Cross Compile
-    target.path = /home/pi/test4
+    target.path = /home/pi/test5
     INSTALLS += target
 }
 win32{
