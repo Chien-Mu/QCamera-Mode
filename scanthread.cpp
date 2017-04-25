@@ -117,7 +117,7 @@ QByteArray scanthread::scan(QImage *currentImage){
         dmtxRegionDestroy(&dmReg);
     }
     info.total = ScanCount;
-    emit throwInfo(info);
+    //emit throwInfo(info);
     //qDebug() << "ScanCount" << QString::number(ScanCount);
 
     dmtxDecodeDestroy(&dmDec);
