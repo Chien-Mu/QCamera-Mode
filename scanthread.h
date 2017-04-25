@@ -17,8 +17,6 @@ public:
     //void setScan();
     void run();
     void stop();
-    INFO info;
-    int rectCount;
 
 private:
     MainWindow *ref;

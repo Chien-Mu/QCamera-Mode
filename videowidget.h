@@ -25,8 +25,9 @@ private:
     int H;
     QPen pen;
     QVector<QRect> rects;
-    QVector<QRect> rect_null;
-    bool isPush;
+    QRect rect_null;
+    volatile bool isPush;
+    volatile bool isdraw;
 };
 
 #endif // VIDEOWIDGET_H

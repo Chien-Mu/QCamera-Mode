@@ -70,13 +70,14 @@ QByteArray scanthread::scan(QImage *currentImage){
     int timeoutMS = 200;
     int ScanCount=0;
     int ScanLimit=SCANTOTAL;
+    INFO info;
     info.total = 0;
     for(int i =0;i<ScanLimit ;i++){
-        info.infoSN[i].SN = "";
-        info.infoSN[i].rects.setX(0);
-        info.infoSN[i].rects.setY(0);
-        info.infoSN[i].rects.setWidth(0);
-        info.infoSN[i].rects.setHeight(0);
+        info.SN[i].text = "";
+        info.SN[i].rect.setX(0);
+        info.SN[i].rect.setY(0);
+        info.SN[i].rect.setWidth(0);
+        info.SN[i].rect.setHeight(0);
     }
 
     for(int i=0;i<ScanLimit;i++){
@@ -90,7 +91,7 @@ QByteArray scanthread::scan(QImage *currentImage){
         dmMsg = dmtxDecodeMatrixRegion(dmDec,dmReg,DmtxUndefined); //decode
         if(dmMsg != NULL){
             SN = (char*)dmMsg->output;
-            info.infoSN[ScanCount].SN = SN;
+            info.SN[ScanCount].text = SN;
 
             //position information
             p00.X = p00.Y = p10.Y = p01.X = 0.0;
@@ -104,10 +105,10 @@ QByteArray scanthread::scan(QImage *currentImage){
             //qDebug() << (int)(p10.X + 0.5) << p_height - 1 - (int)(p10.Y + 0.5);
             //qDebug() << (int)(p11.X + 0.5) << p_height - 1 - (int)(p11.Y + 0.5);
             //qDebug() << (int)(p01.X + 0.5) << p_height - 1 - (int)(p01.Y + 0.5);
-            info.infoSN[ScanCount].rects.setX((int)(p01.X + 0.5));
-            info.infoSN[ScanCount].rects.setY(p_height - 1 - (int)(p01.Y + 0.5));
-            info.infoSN[ScanCount].rects.setWidth((int)(p11.X + 0.5) - info.infoSN[ScanCount].rects.x());
-            info.infoSN[ScanCount].rects.setHeight((p_height - 1 - (int)(p00.Y + 0.5)) - info.infoSN[ScanCount].rects.y());
+            info.SN[ScanCount].rect.setX((int)(p01.X + 0.5));
+            info.SN[ScanCount].rect.setY(p_height - 1 - (int)(p01.Y + 0.5));
+            info.SN[ScanCount].rect.setWidth((int)(p11.X + 0.5) - info.SN[ScanCount].rect.x());
+            info.SN[ScanCount].rect.setHeight((p_height - 1 - (int)(p00.Y + 0.5)) - info.SN[ScanCount].rect.y());
             ScanCount++;
 
             //release dmMsg
@@ -117,7 +118,7 @@ QByteArray scanthread::scan(QImage *currentImage){
         dmtxRegionDestroy(&dmReg);
     }
     info.total = ScanCount;
-    //emit throwInfo(info);
+    emit throwInfo(info);
     //qDebug() << "ScanCount" << QString::number(ScanCount);
 
     dmtxDecodeDestroy(&dmDec);

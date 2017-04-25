@@ -6,6 +6,7 @@
 #include <QImage>
 
 #include "camera.h"
+#include "shared.h"
 
 namespace Ui {
 class MainWindow;

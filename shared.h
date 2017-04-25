@@ -7,13 +7,13 @@
 #include <QMetaType>
 #define SCANTOTAL 2
 
-struct InfoSN{
-    QRect rects;
-    QByteArray SN;
+struct INFO_SN{
+    QRect rect;
+    QByteArray text;
 };
 
 struct INFO{
-    InfoSN infoSN[SCANTOTAL];
+    INFO_SN SN[SCANTOTAL];
     int total;
 };
 Q_DECLARE_METATYPE(INFO)
