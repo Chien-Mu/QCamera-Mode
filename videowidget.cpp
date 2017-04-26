@@ -50,6 +50,12 @@ void VideoWidget::paintEvent(QPaintEvent *event)
         surface->paintImage(&painter); //從記憶體取得圖
 
         //draw
+        pen.setBrush(Qt::black);
+        pen.setWidth(1);
+        painter.setPen(pen);
+        painter.drawLine(0,240,640,240);
+        painter.drawLine(320,0,320,480);
+
         pen.setBrush(Qt::red);
         pen.setWidth(4);
         painter.setPen(pen);
