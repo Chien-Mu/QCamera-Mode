@@ -6,6 +6,9 @@
 #include "myvideosurface.h"
 #include "shared.h"
 
+/* 因為 QAbstractVideoSurface 只提供從記憶體處理圖、取圖，但沒有畫板功能
+ * 所以這裏做一個 QWidget 當 QAbstractVideoSurface 的畫版*/
+
 class VideoWidget : public QWidget
 {
 public:

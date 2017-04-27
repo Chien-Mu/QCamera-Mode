@@ -16,7 +16,7 @@ QList<QVideoFrame::PixelFormat> MyVideoSurface::supportedPixelFormats(
     if (handleType == QAbstractVideoBuffer::NoHandle) {
         return QList<QVideoFrame::PixelFormat>()
                 << QVideoFrame::Format_RGB24 //raspberry pi Format_RGB32不能用，會跳到 Format_ARGB32
-                << QVideoFrame::Format_RGB32
+                << QVideoFrame::Format_RGB32 //以 Format_RGB32 優先使用，若不支援則會自動改一下個 Format_ARGB32 使用
                 << QVideoFrame::Format_ARGB32
                 << QVideoFrame::Format_ARGB32_Premultiplied
                 << QVideoFrame::Format_RGB565
@@ -26,6 +26,7 @@ QList<QVideoFrame::PixelFormat> MyVideoSurface::supportedPixelFormats(
     }
 }
 
+//這裡是另一個執行緒
 bool MyVideoSurface::present(const QVideoFrame &frame)
 {
     Q_UNUSED(frame);
@@ -85,7 +86,7 @@ void MyVideoSurface::getlock(){
 
 QImage MyVideoSurface::getCurrentImage(){
     QImage currentImage;
-    currentImage = _image.convertToFormat(QImage::Format_Grayscale8);
+    currentImage = _image.convertToFormat(QImage::Format_Grayscale8); //要處理的圖灰階化
     this->isGet = false;
 
     return currentImage;

@@ -30,7 +30,7 @@ void VideoWidget::draw(INFO info){
     while(isdraw)
         continue;
 
-    for(int i=0;i<SCANTOTAL && !isdraw;i++){
+    for(int i=0;i<SCANTOTAL && !isdraw;i++){ //for 裡面也要加 isdraw 判斷！
         if(i<info.total || !info.SN[i].rect.isNull() || !info.SN[i].rect.isEmpty())
             this->rects[i] = info.SN[i].rect;
         else
@@ -40,6 +40,7 @@ void VideoWidget::draw(INFO info){
     isPush = false;
 }
 
+// paintEvent() 與 draw() 是不同執行緒在使用的
 void VideoWidget::paintEvent(QPaintEvent *event)
 {
     Q_UNUSED(event);
@@ -60,6 +61,10 @@ void VideoWidget::paintEvent(QPaintEvent *event)
         pen.setWidth(4);
         painter.setPen(pen);
         if(!isPush){
+        	/* 加 isdraw 的重要性超大
+        	   一定有機率會跑進來後，draw()才執行，所以裡面還要再加保護
+        	   避免 draw() 改值
+        	   當初因為這原因 搞了很久..*/
             isdraw = true;
             painter.drawRects(rects); //在畫上矩形
             isdraw = false;
