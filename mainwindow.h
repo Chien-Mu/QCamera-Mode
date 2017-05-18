@@ -34,9 +34,11 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    Camera *camera;
     QPlainTextEdit *formText;
-    VideoWidget *videoWidget;
+
+    //camera
+    Camera *camera;
+
 
 private slots:
     void displayCaptureError(int id,QCameraImageCapture::Error error,const QString &errorString);

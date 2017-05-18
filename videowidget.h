@@ -26,6 +26,8 @@ private:
     MyVideoSurface *surface;
     int W;
     int H;
+    float Wratio;
+    float Hratio;
     QPen pen;
     QVector<QRect> rects;
     QRect rect_null;

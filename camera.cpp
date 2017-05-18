@@ -8,10 +8,10 @@ Camera::Camera()
     /*C310 Support
      * 320X240
      * 640X480
-     * 1.2MP
-     * 5.0MP    */
-    this->W = 640;
-    this->H = 480;
+     * 1280 X 720
+     * 5.0MP (軟體增強處理) */
+    this->W = 1280;
+    this->H = 720;
 }
 
 void Camera::setCamera(QByteArray deviceName){
