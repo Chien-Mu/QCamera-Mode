@@ -64,7 +64,9 @@ void MyVideoSurface::paintImage(QPainter *painter)
         }
 
         //image = image.scaled(W,H);
-        //image = image.mirrored(); //windows 相機畫面會變鏡像，要倒過來
+#if defined (WINDOWS)
+        image = image.mirrored(); //windows 相機畫面會變鏡像，要倒過來
+#endif
         painter->drawImage(0,0,image.scaled(640,480));
 
         //如果沒有在擷取

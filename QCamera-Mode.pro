@@ -46,6 +46,9 @@ unix:!macx{
     INSTALLS += target
 }
 win32{
+    #preprocessor definition
+    DEFINES += WINDOWS
+
     #libdmtx
     INCLUDEPATH += C:\libdmtx-libdmtx\include
     LIBS += C:\libdmtx-libdmtx\libdmtx.lib
