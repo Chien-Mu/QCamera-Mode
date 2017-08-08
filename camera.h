@@ -23,7 +23,7 @@ class Camera : public QObject
 {
     Q_OBJECT
 public:
-    Camera(QByteArray deviceName);
+    Camera();
     //set
     void setCamera(QByteArray deviceName);
     void CameraStrat();

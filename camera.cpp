@@ -2,7 +2,7 @@
 #include <QDebug>
 #include <QMessageBox>
 
-Camera::Camera(QByteArray deviceName)
+Camera::Camera()
 {
     //統一解析度
     /*C310 Support
@@ -12,8 +12,6 @@ Camera::Camera(QByteArray deviceName)
      * 5.0MP (軟體增強處理) */
     this->W = 640;
     this->H = 480;
-
-    setCamera(deviceName);
 }
 
 void Camera::setCamera(QByteArray deviceName){
