@@ -1,11 +1,10 @@
 ﻿#include "myvideosurface.h"
 #include <QDebug>
 
-MyVideoSurface::MyVideoSurface(QWidget *widget,int W,int H, QObject *parent) : QAbstractVideoSurface(parent)
+MyVideoSurface::MyVideoSurface(QWidget *widget,QSize widgetSize, QObject *parent) : QAbstractVideoSurface(parent)
 {
     this->widget = widget;
-    this->W = W;
-    this->H = H;
+    this->widgetSize = widgetSize;
     this->isDraw = false; //一開始要讓他進去
     this->isGet = true; //一開始不能讓他進去
 }
@@ -63,15 +62,14 @@ void MyVideoSurface::paintImage(QPainter *painter)
             return;
         }
 
-        //image = image.scaled(W,H);
 #if defined (WINDOWS)
         image = image.mirrored(); //windows 相機畫面會變鏡像，要倒過來
 #endif
-        painter->drawImage(0,0,image.scaled(640,480));
+        painter->drawImage(0,0,image.scaled(widgetSize)); //到畫板的圖要縮小、放大，以畫板大小為準
 
         //如果沒有在擷取
         if(!isGet)
-            _image = image;
+            _image = image; //要影像處理的圖需要原畫素(未放大縮小)
 
         currentFrame.unmap(); //不能在後面釋放，會拖累整個速度，使用完就要釋放速度差很多。
     }
@@ -81,14 +79,13 @@ void MyVideoSurface::Drawing(bool isDraw){
     this->isDraw = isDraw;
 }
 
-//不可兩個執行緒同時呼叫此函式，不然就算加了isGet也會不穩
 void MyVideoSurface::getlock(){
     this->isGet = true;
 }
 
+//不可兩個執行緒同時呼叫此函式，不然就算加了isGet也會不穩
 QImage MyVideoSurface::getCurrentImage(){
-    QImage currentImage;
-    currentImage = _image.convertToFormat(QImage::Format_Grayscale8); //要處理的圖灰階化
+    QImage currentImage = _image.convertToFormat(QImage::Format_Grayscale8); //要處理的圖灰階化
     this->isGet = false;
 
     return currentImage;

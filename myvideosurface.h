@@ -12,7 +12,7 @@ class MyVideoSurface : public QAbstractVideoSurface
 {
     Q_OBJECT
 public:
-    MyVideoSurface(QWidget *widget, int W, int H, QObject *parent = 0); //為了觸發外界的 eventpaint，所以建構子讓 widget 帶進來
+    MyVideoSurface(QWidget *widget, QSize widgetSize, QObject *parent = 0); //為了觸發外界的 eventpaint，所以建構子讓 widget 帶進來
 
     //返回預設支援的格式（一定要實作)
     QList<QVideoFrame::PixelFormat> supportedPixelFormats(
@@ -39,8 +39,7 @@ private:
     QWidget *widget;
     QVideoFrame currentFrame;
     QImage _image;
-    int W;
-    int H;
+    QSize widgetSize;
     volatile bool isDraw;
     volatile bool isGet;
 };

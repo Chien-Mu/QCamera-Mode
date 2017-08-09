@@ -10,8 +10,8 @@ Camera::Camera()
      * 640X480
      * 1280 X 720
      * 5.0MP (軟體增強處理) */
-    this->W = 640;
-    this->H = 480;
+    this->imageSize.setWidth(1280);
+    this->imageSize.setHeight(720);
 }
 
 void Camera::setCamera(QByteArray deviceName){
@@ -29,7 +29,7 @@ void Camera::setCamera(QByteArray deviceName){
      * 支援QVideoWidet、QGraphicsVidroItem、QAbstractVideoSurface，三種取景器。 */
 
     //3
-    videoWidget = new VideoWidget(W,H);
+    videoWidget = new VideoWidget(imageSize);
     cameraDevice->setViewfinder(videoWidget->refVideoSurface());
 
     /*
@@ -73,7 +73,7 @@ void Camera::setCamera(QByteArray deviceName){
     //設定相機抓傳入時解析度
     QImageEncoderSettings imageSettings; //QImageEncoderSettings 為設定影像編碼選項
     //imageSettings.setCodec("image/jpeg");
-    imageSettings.setResolution(W,H);
+    imageSettings.setResolution(imageSize);
     imageCapture->setEncodingSettings(imageSettings); //匯入設定影像編碼選項
 
     //回傳相機支援

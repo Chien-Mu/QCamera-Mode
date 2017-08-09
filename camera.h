@@ -52,8 +52,7 @@ private:
     QGraphicsScene *scene;
 
     //屬性
-    int W;
-    int H;
+    QSize imageSize;
 
 private slots:
     void on_cameraError();

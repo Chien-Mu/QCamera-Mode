@@ -1,15 +1,20 @@
 ﻿#include "videowidget.h"
 #include <QDebug>
 
-VideoWidget::VideoWidget(int W, int H, QWidget *parent) : QWidget(parent)
+VideoWidget::VideoWidget(QSize imageSize, QWidget *parent) : QWidget(parent)
 {
-    this->W = W;
-    this->H = H;
-    this->Wratio = 640.0/(float)W;
-    this->Hratio = 480.0/(float)H;
+    this->imageSize = imageSize; //設定圖像大小
+    QSize widgetSize(640,480); //設定畫版大小(非圖像大小)
+
+    this->Wratio = (float)widgetSize.width()/(float)imageSize.width();
+    this->Hratio = (float)widgetSize.height()/(float)imageSize.height();
 
     this->isPush = true;
     this->isdraw = false;
+
+    surface = new MyVideoSurface(this,widgetSize);
+    this->setFixedSize(widgetSize); //如果沒設畫板大小，可能顯示會有問題。
+    //-----------以上為不可變動區-------------
 
     rect_null.setX(0);
     rect_null.setY(0);
@@ -17,9 +22,6 @@ VideoWidget::VideoWidget(int W, int H, QWidget *parent) : QWidget(parent)
     rect_null.setHeight(0);
     for(int i=0;i<SCANTOTAL;i++)
         this->rects.push_back(rect_null);
-
-    surface = new MyVideoSurface(this,W,H);
-    this->setFixedSize(640,480); //如果沒設畫板大小，可能顯示會有問題。
 }
 
 VideoWidget::~VideoWidget(){
