@@ -33,7 +33,7 @@ public:
 
     //get
     QWidget *getVideoWidget() { return videoWidget; } //丟出畫版
-    QImage getCurrentImage(); //丟圖(不使用 標記 4 的情況，就是使用這函式取圖)
+    QImage &getCurrentImage(); //丟圖(不使用 標記 4 的情況，就是使用這函式取圖)
 
 public slots:
     void drawVideoWidget(INFO info);

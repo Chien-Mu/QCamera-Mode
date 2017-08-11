@@ -16,17 +16,20 @@ void scanthread::run(){
     QByteArray SN;
 
     while(!quit){
-        QImage *currentImage = ref->on_Capture();
+        QImage currentImage = ref->on_Capture().copy(); //by MyVideoSurface 的 currentImage value(copy)
+        /* 這裡正常來說 不用加 .copy()
+         * 但因為QImage的機制，兩者來自不同 thread，image = image 就會導致QImage 內部記憶體位置一樣
+         */
 
         //check
-        if(currentImage->isNull()){
+        if(currentImage.isNull()){
             msleep(200);
             continue;
         }
 
         //scanner
         if(!quit){
-            SN = scan(currentImage);
+            SN = scan(&currentImage);
             //qDebug() << "Decode: " << SN;
         }
         //msleep(200);

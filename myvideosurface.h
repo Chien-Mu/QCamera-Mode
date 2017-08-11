@@ -25,7 +25,7 @@ public:
     void paintImage(QPainter *painter); //讓外界的 painter 可以進來被劃上image
     void Drawing(bool isDraw);
     void getlock();
-    QImage getCurrentImage();
+    QImage &getCurrentImage();
 
     
     /*
@@ -38,6 +38,7 @@ public:
 private:
     QWidget *widget;
     QVideoFrame currentFrame;
+    QImage currentImage;
     QImage _image;
     QSize widgetSize;
     volatile bool isDraw;

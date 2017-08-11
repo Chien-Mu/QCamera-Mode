@@ -4,7 +4,7 @@
 VideoWidget::VideoWidget(QSize imageSize, QWidget *parent) : QWidget(parent)
 {
     this->imageSize = imageSize; //設定圖像大小
-    QSize widgetSize(640,480); //設定畫版大小(非圖像大小)
+    QSize widgetSize(PAINT_WIDTH,PAINT_HEIGTH); //設定畫版大小(非圖像大小)
 
     this->Wratio = (float)widgetSize.width()/(float)imageSize.width();
     this->Hratio = (float)widgetSize.height()/(float)imageSize.height();

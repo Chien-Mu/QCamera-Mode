@@ -12,7 +12,6 @@ scanthread *scanner;
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent),ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    this->currentImage_ptr = 0; //有使用指標都要初始化
 
     //為了讓camera在中心
     QSpacerItem * H_spacer = new QSpacerItem(1000,0, QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -76,10 +75,8 @@ void MainWindow::stop(){
     qDebug() << "stop";
 }
 
-QImage* MainWindow::on_Capture(){
-    this->currentImage =  camera->getCurrentImage(); //by value
-    this->currentImage_ptr = &this->currentImage;
-    return currentImage_ptr;
+QImage &MainWindow::on_Capture(){
+    return camera->getCurrentImage(); //by MyVideoSurface 的 currentImage reference
 }
 
 void MainWindow::displayCaptureError(int id, QCameraImageCapture::Error error, const QString &errorString){

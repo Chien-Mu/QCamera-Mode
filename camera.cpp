@@ -10,8 +10,8 @@ Camera::Camera()
      * 640X480
      * 1280 X 720
      * 5.0MP (軟體增強處理) */
-    this->imageSize.setWidth(1280);
-    this->imageSize.setHeight(720);
+    this->imageSize.setWidth(IMAGE_WIDTH);
+    this->imageSize.setHeight(IMAGE_HEIGTH);
 }
 
 void Camera::setCamera(QByteArray deviceName){
@@ -102,7 +102,7 @@ void Camera::setCamera(QByteArray deviceName){
     //connect(imageCapture,SIGNAL(imageSaved(int,QString)),this,SIGNAL(imageSaved(int,QString)));
 }
 
-QImage Camera::getCurrentImage(){
+QImage &Camera::getCurrentImage(){
     /* 這裡取圖時，一定要加 lock ，不然跑個幾小時就會當
        因為底層的程序在跑時，這邊程序又去取圖，有一定的機率會照成，底層正在改圖，這邊正在取圖
        這時候就會照成 segmentation fault */

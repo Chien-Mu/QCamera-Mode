@@ -6,7 +6,7 @@ MyVideoSurface::MyVideoSurface(QWidget *widget,QSize widgetSize, QObject *parent
     this->widget = widget;
     this->widgetSize = widgetSize;
     this->isDraw = false; //一開始要讓他進去
-    this->isGet = true; //一開始不能讓他進去
+    this->isGet = false;
 }
 
 QList<QVideoFrame::PixelFormat> MyVideoSurface::supportedPixelFormats(
@@ -84,8 +84,8 @@ void MyVideoSurface::getlock(){
 }
 
 //不可兩個執行緒同時呼叫此函式，不然就算加了isGet也會不穩
-QImage MyVideoSurface::getCurrentImage(){
-    QImage currentImage = _image.convertToFormat(QImage::Format_Grayscale8); //要處理的圖灰階化
+QImage &MyVideoSurface::getCurrentImage(){
+    currentImage = _image.convertToFormat(QImage::Format_Grayscale8); //要處理的圖灰階化
     this->isGet = false;
 
     return currentImage;
